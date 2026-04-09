@@ -1,0 +1,7 @@
+{
+  "name": "infoFacil",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

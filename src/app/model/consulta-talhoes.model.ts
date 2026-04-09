@@ -1,0 +1,30 @@
+export interface ConsultaTalhoes {
+  IdSIG: number;
+  IdTalhao: number;
+  Projeto: string;
+  CodTalhao: string;
+  Area: number;
+  AreaPlantioEfetivo: number;
+  DataBase: string;
+  Ciclo: number;
+  Rotacao: number;
+  Idade: number;
+  Empresa: string;
+  Filial: string;
+  CentroCusto: string;
+  Manejo: string;
+  Espacamento: string;
+  MaterialGenetico: string;
+  Especie: string;
+  UsoSolo: string;
+  Municipio: string;
+  Financiamento: string;
+  Matricula: string;
+  Retalhonado: boolean;
+  IdTalhaoPai: number;
+  PercentualRetalhonamento: number;
+  NumeroExperimento: string;
+  Desbaste: boolean;
+  IdIntegracao: string;
+  Ativo: boolean;
+}

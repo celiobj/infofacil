@@ -1,0 +1,100 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Bem-vindo ao infoFácil</ion-card-title>
+      <ion-card-subtitle>App com menu lateral</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      Use o menu lateral para acessar a tela Home, a configuração e a página Sobre.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Dados OData</ion-card-title>
+      <ion-card-subtitle>Exemplo de chamada OData</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p style="font-size: small; color: var(--ion-color-medium);">
+        Para desenvolvimento, execute: <code>npm run dev</code> (inicia proxy + app simultaneamente)
+      </p>
+
+      <ion-button fill="solid" color="primary" (click)="showApontamentos()" [disabled]="loading">
+        <ion-icon name="list" slot="start"></ion-icon>
+        Mostrar Apontamentos
+      </ion-button>
+
+      <ion-button fill="solid" color="secondary" (click)="showApontamentosAPI()" [disabled]="loading">
+        <ion-icon name="cloud-download" slot="start"></ion-icon>
+        Buscar da API
+      </ion-button>
+
+      <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+
+      <ion-text *ngIf="error" color="danger">
+        <p>{{ error }}</p>
+        <p *ngIf="error.includes('CORS') || error.includes('preflight')" style="font-size: small; margin-top: 10px;">
+          <strong>Soluções:</strong><br>
+          1. Execute <code>npm run dev</code> para usar o proxy local<br>
+          2. Ou instale extensão "CORS Unblock" no navegador
+        </p>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="apontamentos.length > 0">
+    <ion-card-header>
+      <ion-card-title>Lista de Apontamentos</ion-card-title>
+      <ion-card-subtitle>Separados por item</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-searchbar
+        placeholder="Pesquisar por qualquer campo"
+        [(ngModel)]="searchTerm"
+        debounce="300"
+        showClearButton="focus"
+      ></ion-searchbar>
+
+      <ion-list>
+        <ion-item *ngFor="let apontamento of filteredApontamentos; let i = index">
+          <ion-label>
+            <h2>{{ apontamento.OrdemServico }}</h2>
+            <p><strong>Operação:</strong> {{ apontamento.Operacao }}</p>
+            <p><strong>Responsável:</strong> {{ apontamento.Responsavel }}</p>
+            <p><strong>Turma:</strong> {{ apontamento.Turma }}</p>
+            <p><strong>Data Início:</strong> {{ apontamento.DataInicio | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p><strong>Data Fim:</strong> {{ apontamento.DataFim | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p><strong>Status:</strong> {{ apontamento.StatusWeb }}</p>
+            <ion-button fill="clear" size="small" (click)="toggleDetails(apontamento)">
+              {{ showDetails[apontamento.CodigoApontamento] ? 'Ocultar Detalhes' : 'Mostrar Detalhes' }}
+            </ion-button>
+            <div *ngIf="showDetails[apontamento.CodigoApontamento]">
+              <p><strong>Código:</strong> {{ apontamento.CodigoApontamento }}</p>
+              <p><strong>Centro de Custo:</strong> {{ apontamento.ConcatenacaoNome }}</p>
+              <p><strong>Filial:</strong> {{ apontamento.NomeFilial }}</p>
+              <p><strong>Empresa:</strong> {{ apontamento.NomeEmpresa }}</p>
+              <p><strong>Matrícula:</strong> {{ apontamento.Matricula }}</p>
+              <p><strong>Grupo Operação:</strong> {{ apontamento.GrupoOperacao }}</p>
+              <p><strong>ID Operação:</strong> {{ apontamento.IdOperacao }}</p>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
