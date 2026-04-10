@@ -349,7 +349,7 @@ export class HomePage {
     this.error = null;
     this.apontamentos = [];
 
-    this.odataService.getApontamentos({ '$top': '10' }).subscribe({
+    this.odataService.getMetadatahttp().subscribe({
       next: (data) => {
         if (data && data.value) {
           this.apontamentos = data.value;

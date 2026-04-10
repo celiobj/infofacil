@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,9 @@ export class OdataService {
     return new HttpHeaders({
       'Authorization': `Basic ${auth}`,
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
     });
   }
 
@@ -53,6 +56,9 @@ export class OdataService {
     });
   }
 
+
+
+
   /**
    * Busca dados da API Plantar Forest
    * @param entity Nome da entidade OData (ex: 'Apontamento')
@@ -70,7 +76,7 @@ export class OdataService {
    * Busca apontamentos (exemplo específico)
    */
   getApontamentos(params?: { [key: string]: string }): Observable<any> {
-    const url = `${this.baseUrl}/ConsultaApontamentos`;
+    const url = `${this.baseUrl}/ConsultaApontamentos?$top=10`;
     return this.getOdataData(url, params);
   }
 
@@ -83,5 +89,23 @@ export class OdataService {
       headers: this.getAuthHeaders(),
       responseType: 'text'
     });
+  }
+
+  getMetadatahttp(): Observable<any> {
+    const options = {
+      url: 'https://grupoplantar.mendixcloud.com/odata/pos_apontamento/v1/ConsultaApontamentos',
+      params: { '$top': '10' },
+      headers: { 'Authorization': 'Basic ' + btoa('ws.plantarforest:PLws@2025') }
+    };
+
+    const doGet = async () => {
+      const response: HttpResponse = await CapacitorHttp.get(options);
+      console.log('Dados:', response.data);
+    };
+    doGet();
+    return new Observable(observer => {
+      observer.complete();
+    });
+
   }
 }

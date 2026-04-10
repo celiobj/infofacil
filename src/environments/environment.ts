@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  odataApiUrl: 'https://grupoplantar.mendixcloud.com/odata'
+  odataApiUrl: 'https://grupoplantar.mendixcloud.com/odata/pos_apontamento/v1'
 };
 
 /*
